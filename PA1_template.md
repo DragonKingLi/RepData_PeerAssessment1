@@ -6,6 +6,7 @@
 2. Process/transform the data (if necessary) into a format suitable for your analysis
 
 
+
 ```r
 rawdata <- read.csv("activity.csv", header = TRUE, sep=",",na.strings="NA")
 head(rawdata)
@@ -42,12 +43,14 @@ summary(rawdata)
 3. Calculate and report the mean and median of the total number of steps taken per day
 
 
+
 ```r
 NumofStepsperday <- tapply(rawdata$steps, rawdata$date, sum, na.rm=TRUE)
 hist(NumofStepsperday,main = "Histogram of the total number of steps taken per day", xlab="Steps")
 ```
 
 ![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png)
+
 
 ```r
 ### the mean of the total number of steps taken per day
@@ -65,12 +68,14 @@ The median of the total number of steps taken per day is 10395.
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 
+
 ```r
 AverageofStepsPer5mins <- tapply (rawdata$steps, rawdata$interval, mean, na.rm=TRUE)
 plot(AverageofStepsPer5mins, type="l",xlab = "5 minutes interval", ylab="Average number of steps taken", main="The average daily activity pattern")
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
+
 
 ```r
 MaxSteps <- max(AverageofStepsPer5mins)
@@ -85,10 +90,12 @@ The maximum number of steps, on average across all the days in the dataset, is 2
 4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 
+
 ```r
 Missingvalue =sum(is.na(rawdata))
 ```
 The total number of missing values in the dataset is 2304.
+
 
 
 ```r
@@ -102,6 +109,7 @@ for (i in 1:nrow(Reviseddata))
 ```
 
 
+
 ```r
 ##check if all the missing values are filled
 sum(is.na(Reviseddata))
@@ -111,12 +119,15 @@ sum(is.na(Reviseddata))
 ## [1] 0
 ```
 
+
 ```r
 Rev_AverageofStepsPer5mins <- tapply(Reviseddata$steps, Reviseddata$date, sum)
 hist(Rev_AverageofStepsPer5mins, main="Histogram of total number of steps taken per day", xlab ="Steps")
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png)
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
+
+
 
 ```r
 ### the mean of the total number of steps taken per day
@@ -127,11 +138,12 @@ Median_Rev_AverageofStepsPer5mins<- median(as.integer(Rev_AverageofStepsPer5mins
 The mean of the total number of steps taken per day is 1.0766164 &times; 10<sup>4</sup>.
 The median of the total number of steps taken per day is 10766.
 
-Comparing the filled dataset with the raw dataset, it is found that the mean and median of the total number of steps taken per day changed very little. Given the stragegy taken for filling the missing value, the impact is negligible.
+Comparing the filled dataset with the raw dataset, it is found that the mean and median of the total number of steps taken per day changed very little. Given the stragegy taken for filling the missing value using the mean value, the impact is negligible.
 
 ##Are there differences in activity patterns between weekdays and weekends?
 1. Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository to see an example of what this plot should look like using simulated data.
+
 
 
 ```r
@@ -144,7 +156,7 @@ weekdata <- aggregate(steps ~ interval +week, data = rawdata, mean, na.rm=TRUE)
 ggplot(weekdata, aes(interval, steps))+geom_line()+facet_grid(week ~.)+labs(x="5 minutes interval")+labs(y="Average number of steps taken")+labs(title="The average activity pattern between weekdays and weekends")
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png)
 
 
 From these two plots, we can see the activity pattern between weekdays and weekends are different.
